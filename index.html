@@ -19,5 +19,15 @@
                 <rppa-browser />
             </div>
         </div>
+        <script>
+            window.addEventListener("WebComponentsReady", function () {
+                var patientDashboard, rppaBrowser;
+                patientDashboard = document.querySelector("patient-dashboard");
+                rppaBrowser = document.querySelector("rppa-browser");
+                patientDashboard.addEventListener("patient", function (ev) {
+                    rppaBrowser.patient = ev.detail.patients.join(",");
+                });
+            });
+        </script>
     </body>
 </html>

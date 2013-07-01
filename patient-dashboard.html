@@ -5,6 +5,7 @@
         <h1>Patient Dashboard</h1>
         <table>
             <tr>
+                <th></th>
                 <th>Patient</th>
                 <th>Race</th>
                 <th>Gender</th>
@@ -12,6 +13,7 @@
             <div id="loading" loading="{{loading}}"></div>
             <template id="patient" repeat="{{patients}}">
                 <tr>
+                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="togglePatient" /></td>
                     <td>{{bcr_patient_barcode}}</td>
                     <td>{{race}}</td>
                     <td>{{gender}}</td>
@@ -21,7 +23,21 @@
     </template>
     <script>
         Polymer.register(this, {
+            patients: [],
             loading: true,
+            togglePatient: function (ev) {
+                var barcode, index;
+                barcode = ev.target.dataset["barcode"];
+                index = this.patients.indexOf(barcode);
+                if (index === -1) {
+                    this.patients.push(barcode);
+                } else {
+                    this.patients.splice(index, 1);
+                }
+                this.fire("patient", {
+                    patients: this.patients
+                });
+            },
             ready: function () {
                 var customElement, shadowRoot, patientRequest;
              // Capture reference to custom element.

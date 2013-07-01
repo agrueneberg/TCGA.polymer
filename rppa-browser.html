@@ -33,15 +33,16 @@
                 }
             },
             updateTemplate: function () {
-                var customElement, shadowRoot, browserTemplate, filteredSamples;
-                customElement = this;
+                var shadowRoot, browserTemplate, patients, filteredSamples;
              // Capture reference to ShadowRoot so that we can use getElementById.
                 shadowRoot = this.webkitShadowRoot;
                 browserTemplate = shadowRoot.getElementById("browser");
                 if (this.patient) {
+                 // Not sure what data types I can use in attributes, let's split the string for now.
+                    patients = this.patient.split(",");
                     filteredSamples = rppaSamples.filter(function (sample) {
-                        return sample.patientBarcode === customElement.patient;
-                    })
+                        return patients.indexOf(sample.patientBarcode) !== -1;
+                    });
                 } else {
                     filteredSamples = rppaSamples;
                 }
