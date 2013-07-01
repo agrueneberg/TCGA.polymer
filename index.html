@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>TCGA Playground</title>
+        <title>TCGA.polymer</title>
         <link rel="stylesheet" href="bootstrap.css" />
         <!-- Load polyfills -->
         <script src="polymer.js"></script>
@@ -11,6 +11,27 @@
         <link rel="import" href="rppa-browser.html" />
     </head>
     <body>
+        <h1>TCGA.polymer</h1>
+        <p>
+            This playground demonstrates the use of
+            <a href="http://www.polymer-project.org">Polymer</a> to create two
+            Web Components: a patient dashboard and an RPPA
+            browser. Both components are working together:
+            selecting a patient in the patient dashboard will filter for
+            antibody expressions in the RPPA browser.
+        </p>
+        <p>
+            You can use the Web Components on their own or in different
+            contexts (without the worry of overwriting global variables and
+            such) by loading the Polymer polyfill, importing the custom
+            elements, and adding an HTML tag such as
+            <code>&lt;patient-dashboard /&gt;</code>.
+        </p>
+        <p>
+            Note: Not all patients appear in the RPPA data, i.e. some selections
+            won't do anything. Try <code>TCGA-02-0003</code>, <code>TCGA-02-0004</code>,
+            or <code>TCGA-02-0011</code> to get an idea of what this tool is doing.
+        </p>
         <div class="row">
             <div class="span6">
                 <patient-dashboard />
