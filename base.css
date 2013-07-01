@@ -1,0 +1,10 @@
+#loading {
+    display: none;
+    width: 16px;
+    height: 16px;
+    background: url('spinner.gif');
+}
+
+#loading[loading=true] {
+    display: block;
+}

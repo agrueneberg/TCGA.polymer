@@ -1,0 +1,61 @@
+<element name="patient-dashboard">
+    <link rel="stylesheet" href="base.css" />
+    <!-- Polymer.register only works with templates -->
+    <template>
+        <h1>Patient Dashboard</h1>
+        <table>
+            <tr>
+                <th>Patient</th>
+                <th>Race</th>
+                <th>Gender</th>
+            </tr>
+            <div id="loading" loading="{{loading}}"></div>
+            <template id="patient" repeat="{{patients}}">
+                <tr>
+                    <td>{{bcr_patient_barcode}}</td>
+                    <td>{{race}}</td>
+                    <td>{{gender}}</td>
+                </tr>
+            </template>
+        </table>
+    </template>
+    <script>
+        Polymer.register(this, {
+            loading: true,
+            ready: function () {
+                var customElement, shadowRoot, patientRequest;
+             // Capture reference to custom element.
+                customElement = this;
+             // Capture reference to ShadowRoot so that we can use getElementById.
+                shadowRoot = customElement.webkitShadowRoot;
+             // Load patient data.
+                patientRequest = new XMLHttpRequest();
+                patientRequest.open("GET", "http://webrw-sucks.herokuapp.com/?get=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/bcr/biotab/clin/clinical_patient_gbm.txt");
+                patientRequest.onload = function () {
+                    var lines, columns, patients, patientTemplate;
+                    lines = patientRequest.responseText.split("\n");
+                    columns = lines.shift().split("\t");
+                    patients = [];
+                    lines.map(function (line) {
+                     // Filter empty lines.
+                        if (line !== "") {
+                            var fields, patient;
+                            fields = line.split("\t");
+                            patient = {};
+                            fields.forEach(function (value, idx) {
+                                patient[columns[idx]] = value;
+                            });
+                            patients.push(patient);
+                        }
+                    });
+                    customElement.loading = false;
+                    patientTemplate = shadowRoot.getElementById("patient");
+                    patientTemplate.model = {
+                       patients: patients
+                    };
+                };
+                patientRequest.send(null);
+            }
+        });
+    </script>
+</element>

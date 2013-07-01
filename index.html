@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>TCGA Playground</title>
+        <link rel="stylesheet" href="bootstrap.css" />
+        <!-- Load polyfills -->
+        <script src="polymer.js"></script>
+        <!-- Load custom components -->
+        <link rel="import" href="patient-dashboard.html" />
+        <link rel="import" href="rppa-browser.html" />
+    </head>
+    <body>
+        <div class="row">
+            <div class="span6">
+                <patient-dashboard />
+            </div>
+            <div class="span6">
+                <rppa-browser />
+            </div>
+        </div>
+    </body>
+</html>
