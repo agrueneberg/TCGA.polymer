@@ -1,7 +1,7 @@
 <!-- Load dependencies -->
 <script src="async.js"></script>
 
-<element name="rppa-browser">
+<element name="rppa-browser" attributes="patient">
     <link rel="stylesheet" href="base.css" />
     <!-- Polymer.register only works with templates -->
     <template>
@@ -23,14 +23,36 @@
         </table>
     </template>
     <script>
+        var rppaSamples;
         Polymer.register(this, {
             loading: true,
-            ready: function () {
-                var customElement, shadowRoot, links, mappings;
-             // Capture reference to custom element.
+            patientChanged: function () {
+             // Prevent from firing while loading data.
+                if (this.loading === false) {
+                    this.updateTemplate();
+                }
+            },
+            updateTemplate: function () {
+                var customElement, shadowRoot, browserTemplate, filteredSamples;
                 customElement = this;
              // Capture reference to ShadowRoot so that we can use getElementById.
-                shadowRoot = customElement.webkitShadowRoot;
+                shadowRoot = this.webkitShadowRoot;
+                browserTemplate = shadowRoot.getElementById("browser");
+                if (this.patient) {
+                    filteredSamples = rppaSamples.filter(function (sample) {
+                        return sample.patientBarcode === customElement.patient;
+                    })
+                } else {
+                    filteredSamples = rppaSamples;
+                }
+                browserTemplate.model = {
+                    samples: filteredSamples
+                };
+            },
+            ready: function () {
+                var customElement, links, mappings;
+             // Capture reference to custom element.
+                customElement = this;
              // Load RPPA data.
                 links = [
                     "mdanderson.org_GBM.MDA_RPPA_Core.protein_expression.Level_3.00da2077-778c-418a-9c92-01febd970ed8.txt",
@@ -1144,12 +1166,9 @@
                     };
                     rppaRequest.send(null);
                 }, function (err, samples) {
-                    var browserTemplate;
+                    rppaSamples = samples;
                     customElement.loading = false;
-                    browserTemplate = shadowRoot.getElementById("browser");
-                    browserTemplate.model = {
-                        samples: samples
-                    };
+                    customElement.updateTemplate();
                 });
             }
         });
