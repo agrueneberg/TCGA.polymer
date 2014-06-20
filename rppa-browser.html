@@ -1132,7 +1132,7 @@
                 async.map(links, function (link, callback) {
                     var rppaRequest;
                     rppaRequest = new XMLHttpRequest();
-                    rppaRequest.open("GET", "http://webrw-sucks.herokuapp.com/?get=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/cgcc/mdanderson.org/mda_rppa_core/protein_exp/mdanderson.org_GBM.MDA_RPPA_Core.Level_3.1.0.0/" + link);
+                    rppaRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/cgcc/mdanderson.org/mda_rppa_core/protein_exp/mdanderson.org_GBM.MDA_RPPA_Core.Level_3.1.0.0/" + link);
                     rppaRequest.onload = function () {
                         var sampleRef, expressionLevels;
                      // Normalize data.
