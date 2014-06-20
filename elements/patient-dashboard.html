@@ -1,8 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <polymer-element name="patient-dashboard">
-    <link rel="stylesheet" href="../base.css" />
     <template>
+        <link rel="stylesheet" href="base.css">
         <h2>Patient Dashboard</h2>
         <table>
             <tr>
@@ -14,7 +14,7 @@
             <div id="loading" loading="{{loading}}"></div>
             <template id="patient" repeat="{{patients}}">
                 <tr>
-                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="{{togglePatient}}" /></td>
+                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="{{togglePatient}}"></td>
                     <td>{{bcr_patient_barcode}}</td>
                     <td>{{race}}</td>
                     <td>{{gender}}</td>
