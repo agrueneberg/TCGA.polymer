@@ -50,7 +50,12 @@
                 patientRequest.onload = function () {
                     var lines, columns, patients, patientTemplate;
                     lines = patientRequest.responseText.split("\n");
+                 // Skip first header line: obsolete schema?
+                    lines.shift();
+                 // Get column names.
                     columns = lines.shift().split("\t");
+                 // Skip third header line: not sure what it means.
+                    lines.shift();
                     patients = [];
                     lines.map(function (line) {
                      // Filter empty lines.
