@@ -28,19 +28,22 @@
         Polymer("rppa-browser", {
             loading: true,
             patientChanged: function () {
+                var customElement;
+                customElement = this;
              // Prevent from firing while loading data.
-                if (this.loading === false) {
-                    this.updateTemplate();
+                if (customElement.loading === false) {
+                    customElement.updateTemplate();
                 }
             },
             updateTemplate: function () {
-                var shadowRoot, browserTemplate, patients, filteredSamples;
+                var customElement, shadowRoot, browserTemplate, patients, filteredSamples;
+                customElement = this;
              // Capture reference to ShadowRoot so that we can use getElementById.
-                shadowRoot = this.webkitShadowRoot;
+                shadowRoot = customElement.webkitShadowRoot;
                 browserTemplate = shadowRoot.getElementById("browser");
-                if (this.patient) {
+                if (customElement.patient) {
                  // Not sure what data types I can use in attributes, let's split the string for now.
-                    patients = this.patient.split(",");
+                    patients = customElement.patient.split(",");
                     filteredSamples = rppaSamples.filter(function (sample) {
                         return patients.indexOf(sample.patientBarcode) !== -1;
                     });
@@ -53,7 +56,6 @@
             },
             ready: function () {
                 var customElement, links, mappings;
-             // Capture reference to custom element.
                 customElement = this;
              // Load RPPA data.
                 links = [

@@ -27,21 +27,21 @@
             patients: [],
             loading: true,
             togglePatient: function (ev) {
-                var barcode, index;
+                var customElement, barcode, index;
+                customElement = this;
                 barcode = ev.target.dataset["barcode"];
-                index = this.patients.indexOf(barcode);
+                index = customElement.patients.indexOf(barcode);
                 if (index === -1) {
-                    this.patients.push(barcode);
+                    customElement.patients.push(barcode);
                 } else {
-                    this.patients.splice(index, 1);
+                    customElement.patients.splice(index, 1);
                 }
-                this.fire("patient", {
-                    patients: this.patients
+                customElement.fire("patient", {
+                    patients: customElement.patients
                 });
             },
             ready: function () {
                 var customElement, shadowRoot, patientRequest;
-             // Capture reference to custom element.
                 customElement = this;
              // Capture reference to ShadowRoot so that we can use getElementById.
                 shadowRoot = customElement.webkitShadowRoot;
