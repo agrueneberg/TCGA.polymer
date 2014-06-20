@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>TCGA.polymer</title>
-        <link rel="stylesheet" href="bootstrap.css" />
-        <!-- Load polyfills -->
-        <script src="polymer.js"></script>
+        <link rel="stylesheet" href="bootstrap.css">
+        <!-- Load Web Components polyfills -->
+        <script src="bower_components/platform/platform.js"></script>
         <!-- Load custom components -->
-        <link rel="import" href="patient-dashboard.html" />
-        <link rel="import" href="rppa-browser.html" />
+        <link rel="import" href="patient-dashboard.html">
+        <link rel="import" href="rppa-browser.html">
     </head>
     <body>
         <h1>TCGA.polymer</h1>
@@ -34,14 +34,14 @@
         </p>
         <div class="row">
             <div class="span6">
-                <patient-dashboard />
+                <patient-dashboard>
             </div>
             <div class="span6">
-                <rppa-browser />
+                <rppa-browser>
             </div>
         </div>
         <script>
-            window.addEventListener("WebComponentsReady", function () {
+            window.addEventListener("polymer-ready", function () {
                 var patientDashboard, rppaBrowser;
                 patientDashboard = document.querySelector("patient-dashboard");
                 rppaBrowser = document.querySelector("rppa-browser");

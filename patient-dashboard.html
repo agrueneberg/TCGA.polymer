@@ -1,6 +1,7 @@
-<element name="patient-dashboard">
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<polymer-element name="patient-dashboard">
     <link rel="stylesheet" href="base.css" />
-    <!-- Polymer.register only works with templates -->
     <template>
         <h2>Patient Dashboard</h2>
         <table>
@@ -13,7 +14,7 @@
             <div id="loading" loading="{{loading}}"></div>
             <template id="patient" repeat="{{patients}}">
                 <tr>
-                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="togglePatient" /></td>
+                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="{{togglePatient}}" /></td>
                     <td>{{bcr_patient_barcode}}</td>
                     <td>{{race}}</td>
                     <td>{{gender}}</td>
@@ -22,7 +23,7 @@
         </table>
     </template>
     <script>
-        Polymer.register(this, {
+        Polymer("patient-dashboard", {
             patients: [],
             loading: true,
             togglePatient: function (ev) {
@@ -79,4 +80,4 @@
             }
         });
     </script>
-</element>
+</polymer-element>

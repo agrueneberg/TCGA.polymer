@@ -1,9 +1,10 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
 <!-- Load dependencies -->
 <script src="async.js"></script>
 
-<element name="rppa-browser" attributes="patient">
+<polymer-element name="rppa-browser" attributes="patient">
     <link rel="stylesheet" href="base.css" />
-    <!-- Polymer.register only works with templates -->
     <template>
         <h2>RPPA Browser</h2>
         <table>
@@ -24,7 +25,7 @@
     </template>
     <script>
         var rppaSamples;
-        Polymer.register(this, {
+        Polymer("rppa-browser", {
             loading: true,
             patientChanged: function () {
              // Prevent from firing while loading data.
@@ -1174,4 +1175,4 @@
             }
         });
     </script>
-</element>
+</polymer-element>
