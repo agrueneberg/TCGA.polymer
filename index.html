@@ -2,8 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>TCGA.polymer</title>
-        <link rel="stylesheet" href="bootstrap.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
         <!-- Load Web Components polyfills -->
         <script src="bower_components/platform/platform.js"></script>
         <!-- Load custom components -->
@@ -33,10 +34,10 @@
             or <code>TCGA-02-0011</code> to get an idea of what this tool is doing.
         </p>
         <div class="row">
-            <div class="span6">
+            <div class="col-md-6">
                 <patient-dashboard>
             </div>
-            <div class="span6">
+            <div class="col-md-6">
                 <rppa-browser>
             </div>
         </div>
