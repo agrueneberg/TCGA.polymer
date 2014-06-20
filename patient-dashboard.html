@@ -46,7 +46,7 @@
                 shadowRoot = customElement.webkitShadowRoot;
              // Load patient data.
                 patientRequest = new XMLHttpRequest();
-                patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/bcr/biotab/clin/clinical_patient_gbm.txt");
+                patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_gbm.txt");
                 patientRequest.onload = function () {
                     var lines, columns, patients, patientTemplate;
                     lines = patientRequest.responseText.split("\n");
