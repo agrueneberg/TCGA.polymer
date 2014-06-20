@@ -41,10 +41,8 @@
                 });
             },
             ready: function () {
-                var customElement, shadowRoot, patientRequest;
+                var customElement, patientRequest;
                 customElement = this;
-             // Capture reference to ShadowRoot so that we can use getElementById.
-                shadowRoot = customElement.webkitShadowRoot;
              // Load patient data.
                 patientRequest = new XMLHttpRequest();
                 patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_gbm.txt");
@@ -71,7 +69,7 @@
                         }
                     });
                     customElement.loading = false;
-                    patientTemplate = shadowRoot.getElementById("patient");
+                    patientTemplate = customElement.$.patient;
                     patientTemplate.model = {
                        patients: patients
                     };
