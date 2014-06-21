@@ -8,8 +8,8 @@
         <!-- Load Web Components polyfills -->
         <script src="bower_components/platform/platform.js"></script>
         <!-- Load custom components -->
-        <link rel="import" href="elements/patient-dashboard.html">
-        <link rel="import" href="elements/rppa-browser.html">
+        <link rel="import" href="elements/tcga-patient-selector.html">
+        <link rel="import" href="elements/tcga-rppa.html">
     </head>
     <body>
         <h1>TCGA.polymer</h1>
@@ -26,7 +26,7 @@
             contexts (without the worry of overwriting global variables and
             such) by loading the Polymer polyfill, importing the custom
             elements, and adding an HTML tag such as
-            <code>&lt;patient-dashboard /&gt;</code>.
+            <code>&lt;tcga-patient-selector /&gt;</code>.
         </p>
         <p>
             Note: Not all patients appear in the RPPA data, i.e. some selections
@@ -35,19 +35,19 @@
         </p>
         <div class="row">
             <div class="col-md-6">
-                <patient-dashboard>
+                <tcga-patient-selector>
             </div>
             <div class="col-md-6">
-                <rppa-browser>
+                <tcga-rppa>
             </div>
         </div>
         <script>
             window.addEventListener("polymer-ready", function () {
-                var patientDashboard, rppaBrowser;
-                patientDashboard = document.querySelector("patient-dashboard");
-                rppaBrowser = document.querySelector("rppa-browser");
-                patientDashboard.addEventListener("patient", function (ev) {
-                    rppaBrowser.patient = ev.detail.patients.join(",");
+                var tcgaPatients, tcgaRppa;
+                tcgaPatients = document.querySelector("tcga-patient-selector");
+                tcgaRppa = document.querySelector("tcga-rppa");
+                tcgaPatients.addEventListener("patient", function (e) {
+                    tcgaRppa.patient = e.detail.patients.join(",");
                 });
             });
         </script>

@@ -1,9 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="patient-dashboard">
+<polymer-element name="tcga-patient-selector">
     <template>
         <link rel="stylesheet" href="base.css">
-        <h2>Patient Dashboard</h2>
+        <h2>Patients</h2>
         <div id="loading" loading="{{loading}}"></div>
         <table>
             <tr>
@@ -23,7 +23,7 @@
         </table>
     </template>
     <script>
-        Polymer("patient-dashboard", {
+        Polymer("tcga-patient-selector", {
             loading: true,
             togglePatient: function (e) {
                 var customElement, patient, barcode, index;

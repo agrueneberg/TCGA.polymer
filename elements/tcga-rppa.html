@@ -3,10 +3,10 @@
 <!-- Load dependencies -->
 <script src="../bower_components/async/lib/async.js"></script>
 
-<polymer-element name="rppa-browser" attributes="patient">
+<polymer-element name="tcga-rppa" attributes="patient">
     <template>
         <link rel="stylesheet" href="base.css">
-        <h2>RPPA Browser</h2>
+        <h2>RPPA</h2>
         <div id="loading" loading="{{loading}}"></div>
         <table>
             <tr>
@@ -25,7 +25,7 @@
     </template>
     <script>
         var rppaSamples;
-        Polymer("rppa-browser", {
+        Polymer("tcga-rppa", {
             loading: true,
             patientChanged: function () {
                 var customElement;
