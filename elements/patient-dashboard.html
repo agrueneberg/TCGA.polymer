@@ -14,7 +14,7 @@
             <div id="loading" loading="{{loading}}"></div>
             <template repeat="{{patient in patients}}">
                 <tr>
-                    <td><input type="checkbox" data-barcode="{{patient.bcr_patient_barcode}}" on-click="{{togglePatient}}"></td>
+                    <td><input type="checkbox" on-click="{{togglePatient}}"></td>
                     <td>{{patient.bcr_patient_barcode}}</td>
                     <td>{{patient.race}}</td>
                     <td>{{patient.gender}}</td>
@@ -25,10 +25,11 @@
     <script>
         Polymer("patient-dashboard", {
             loading: true,
-            togglePatient: function (ev) {
-                var customElement, barcode, index;
+            togglePatient: function (e) {
+                var customElement, patient, barcode, index;
                 customElement = this;
-                barcode = ev.target.dataset["barcode"];
+                patient = e.target.templateInstance.model.patient;
+                barcode = patient.bcr_patient_barcode;
                 index = customElement.patients.indexOf(barcode);
                 if (index === -1) {
                     customElement.patients.push(barcode);
