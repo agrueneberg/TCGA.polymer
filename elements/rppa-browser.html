@@ -14,11 +14,11 @@
                 <th>EGFR</th>
             </tr>
             <div id="loading" loading="{{loading}}"></div>
-            <template id="browser" repeat="{{samples}}">
+            <template repeat="{{sample in samples}}">
                 <tr>
-                    <td>{{patientBarcode}}</td>
-                    <td>{{expressionLevels.p53}}</td>
-                    <td>{{expressionLevels.EGFR}}</td>
+                    <td>{{sample.patientBarcode}}</td>
+                    <td>{{sample.expressionLevels.p53}}</td>
+                    <td>{{sample.expressionLevels.EGFR}}</td>
                 </tr>
             </template>
         </table>
@@ -36,9 +36,8 @@
                 }
             },
             updateTemplate: function () {
-                var customElement, browserTemplate, patients, filteredSamples;
+                var customElement, patients, filteredSamples;
                 customElement = this;
-                browserTemplate = customElement.$.browser;
                 if (customElement.patient) {
                  // Not sure what data types I can use in attributes, let's split the string for now.
                     patients = customElement.patient.split(",");
@@ -48,9 +47,12 @@
                 } else {
                     filteredSamples = rppaSamples;
                 }
-                browserTemplate.model = {
-                    samples: filteredSamples
-                };
+                customElement.samples = filteredSamples;
+            },
+            created: function () {
+                var customElement;
+                customElement = this;
+                customElement.samples = [];
             },
             ready: function () {
                 var customElement, links, mappings;

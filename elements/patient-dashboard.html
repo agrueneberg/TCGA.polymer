@@ -12,12 +12,12 @@
                 <th>Gender</th>
             </tr>
             <div id="loading" loading="{{loading}}"></div>
-            <template id="patient" repeat="{{patients}}">
+            <template repeat="{{patient in patients}}">
                 <tr>
-                    <td><input type="checkbox" class="patient" data-barcode="{{bcr_patient_barcode}}" on-click="{{togglePatient}}"></td>
-                    <td>{{bcr_patient_barcode}}</td>
-                    <td>{{race}}</td>
-                    <td>{{gender}}</td>
+                    <td><input type="checkbox" data-barcode="{{patient.bcr_patient_barcode}}" on-click="{{togglePatient}}"></td>
+                    <td>{{patient.bcr_patient_barcode}}</td>
+                    <td>{{patient.race}}</td>
+                    <td>{{patient.gender}}</td>
                 </tr>
             </template>
         </table>
@@ -73,10 +73,7 @@
                         }
                     });
                     customElement.loading = false;
-                    patientTemplate = customElement.$.patient;
-                    patientTemplate.model = {
-                       patients: patients
-                    };
+                    customElement.patients = patients;
                 };
                 patientRequest.send(null);
             }
