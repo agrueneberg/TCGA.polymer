@@ -7,13 +7,13 @@
     <template>
         <link rel="stylesheet" href="base.css">
         <h2>RPPA Browser</h2>
+        <div id="loading" loading="{{loading}}"></div>
         <table>
             <tr>
                 <th>Patient</th>
                 <th>p53</th>
                 <th>EGFR</th>
             </tr>
-            <div id="loading" loading="{{loading}}"></div>
             <template repeat="{{sample in samples}}">
                 <tr>
                     <td>{{sample.patientBarcode}}</td>

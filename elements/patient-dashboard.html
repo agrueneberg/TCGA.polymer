@@ -4,6 +4,7 @@
     <template>
         <link rel="stylesheet" href="base.css">
         <h2>Patient Dashboard</h2>
+        <div id="loading" loading="{{loading}}"></div>
         <table>
             <tr>
                 <th></th>
@@ -11,7 +12,6 @@
                 <th>Race</th>
                 <th>Gender</th>
             </tr>
-            <div id="loading" loading="{{loading}}"></div>
             <template repeat="{{patient in patients}}">
                 <tr>
                     <td><input type="checkbox" on-click="{{togglePatient}}"></td>
