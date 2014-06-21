@@ -24,7 +24,6 @@
     </template>
     <script>
         Polymer("patient-dashboard", {
-            patients: [],
             loading: true,
             togglePatient: function (ev) {
                 var customElement, barcode, index;
@@ -39,6 +38,11 @@
                 customElement.fire("patient", {
                     patients: customElement.patients
                 });
+            },
+            created: function () {
+                var customElement;
+                customElement = this;
+                customElement.patients = [];
             },
             ready: function () {
                 var customElement, patientRequest;
