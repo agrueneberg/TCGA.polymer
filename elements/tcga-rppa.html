@@ -5,23 +5,26 @@
 
 <polymer-element name="tcga-rppa" attributes="patient">
     <template>
-        <link rel="stylesheet" href="base.css">
         <h2>RPPA</h2>
-        <div id="loading" loading="{{loading}}"></div>
-        <table>
-            <tr>
-                <th>Patient</th>
-                <th>p53</th>
-                <th>EGFR</th>
-            </tr>
-            <template repeat="{{sample in samples}}">
+        <template if={{loading}}>
+            <img src="spinner.gif" />
+        </template>
+        <template if="{{!loading}}">
+            <table>
                 <tr>
-                    <td>{{sample.patientBarcode}}</td>
-                    <td>{{sample.expressionLevels.p53}}</td>
-                    <td>{{sample.expressionLevels.EGFR}}</td>
+                    <th>Patient</th>
+                    <th>p53</th>
+                    <th>EGFR</th>
                 </tr>
-            </template>
-        </table>
+                <template repeat="{{sample in samples}}">
+                    <tr>
+                        <td>{{sample.patientBarcode}}</td>
+                        <td>{{sample.expressionLevels.p53}}</td>
+                        <td>{{sample.expressionLevels.EGFR}}</td>
+                    </tr>
+                </template>
+            </table>
+        </template>
     </template>
     <script>
         var rppaSamples;

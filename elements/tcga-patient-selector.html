@@ -2,25 +2,28 @@
 
 <polymer-element name="tcga-patient-selector" attributes="cancerType">
     <template>
-        <link rel="stylesheet" href="base.css">
         <h2>Patients</h2>
-        <div id="loading" loading="{{loading}}"></div>
-        <table>
-            <tr>
-                <th></th>
-                <th>Patient</th>
-                <th>Race</th>
-                <th>Gender</th>
-            </tr>
-            <template repeat="{{patient in patients}}">
+        <template if={{loading}}>
+            <img src="spinner.gif" />
+        </template>
+        <template if="{{!loading}}">
+            <table>
                 <tr>
-                    <td><input type="checkbox" on-click="{{togglePatient}}"></td>
-                    <td>{{patient.bcr_patient_barcode}}</td>
-                    <td>{{patient.race}}</td>
-                    <td>{{patient.gender}}</td>
+                    <th></th>
+                    <th>Patient</th>
+                    <th>Race</th>
+                    <th>Gender</th>
                 </tr>
-            </template>
-        </table>
+                <template repeat="{{patient in patients}}">
+                    <tr>
+                        <td><input type="checkbox" on-click="{{togglePatient}}"></td>
+                        <td>{{patient.bcr_patient_barcode}}</td>
+                        <td>{{patient.race}}</td>
+                        <td>{{patient.gender}}</td>
+                    </tr>
+                </template>
+            </table>
+        </template>
     </template>
     <script>
         Polymer("tcga-patient-selector", {
