@@ -46,7 +46,7 @@
                 var tcgaPatients, tcgaRppa;
                 tcgaPatients = document.querySelector("tcga-patient-selector");
                 tcgaRppa = document.querySelector("tcga-rppa");
-                tcgaPatients.addEventListener("patient", function (e) {
+                tcgaPatients.addEventListener("tcga-patient", function (e) {
                     tcgaRppa.patient = e.detail.patients.join(",");
                 });
             });
