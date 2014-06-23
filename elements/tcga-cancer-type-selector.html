@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="tcga-cancer-type-selector">
+    <template>
+        <h2>Cancer Type</h2>
+        <select value="{{cancerType}}" on-change="{{selectCancerType}}">
+            <template repeat="{{cancerType in cancerTypes}}">
+                <option value="{{cancerType.abbreviation}}">{{cancerType.abbreviation}}: {{cancerType.name}}</option>
+            </template>
+        </table>
+    </template>
+    <script>
+        Polymer("tcga-cancer-type-selector", {
+            cancerType: "GBM",
+            selectCancerType: function (e) {
+                var customElement;
+                customElement = this;
+                customElement.cancerType = e.target.value;
+                customElement.fire("tcga-cancer-type", {
+                    cancerType: customElement.cancerType
+                });
+            },
+            created: function () {
+                var customElement;
+                customElement = this;
+                customElement.cancerTypes = [{
+                    name: "Adrenocortical carcinoma",
+                    abbreviation: "ACC"
+                }, {
+                    name: "Bladder Urothelial Carcinoma",
+                    abbreviation: "BLCA"
+                }, {
+                    name: "Breast invasive carcinoma",
+                    abbreviation: "BRCA"
+                }, {
+                    name: "Cervical squamous cell carcinoma and endocervical adenocarcinoma",
+                    abbreviation: "CESC"
+                }, {
+                    name: "Cholangiocarcinoma",
+                    abbreviation: "CHOL"
+                }, {
+                    name: "Colon adenocarcinoma",
+                    abbreviation: "COAD"
+                }, {
+                    name: "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma",
+                    abbreviation: "DLBC"
+                }, {
+                    name: "Esophageal carcinoma",
+                    abbreviation: "ESCA"
+                }, {
+                    name: "Glioblastoma multiforme",
+                    abbreviation: "GBM"
+                }, {
+                    name: "Head and Neck squamous cell carcinoma",
+                    abbreviation: "HNSC"
+                }, {
+                    name: "Kidney Chromophobe",
+                    abbreviation: "KICH"
+                }, {
+                    name: "Kidney renal clear cell carcinoma",
+                    abbreviation: "KIRC"
+                }, {
+                    name: "Kidney renal papillary cell carcinoma",
+                    abbreviation: "KIRP"
+                }, {
+                    name: "Acute Myeloid Leukemia",
+                    abbreviation: "LAML"
+                }, {
+                    name: "Brain Lower Grade Glioma",
+                    abbreviation: "LGG"
+                }, {
+                    name: "Liver hepatocellular carcinoma",
+                    abbreviation: "LIHC"
+                }, {
+                    name: "Lung adenocarcinoma",
+                    abbreviation: "LUAD"
+                }, {
+                    name: "Lung squamous cell carcinoma",
+                    abbreviation: "LUSC"
+                }, {
+                    name: "Mesothelioma",
+                    abbreviation: "MESO"
+                }, {
+                    name: "Ovarian serous cystadenocarcinoma",
+                    abbreviation: "OV"
+                }, {
+                    name: "Pancreatic adenocarcinoma",
+                    abbreviation: "PAAD"
+                }, {
+                    name: "Pheochromocytoma and Paraganglioma",
+                    abbreviation: "PCPG"
+                }, {
+                    name: "Prostate adenocarcinoma",
+                    abbreviation: "PRAD"
+                }, {
+                    name: "Rectum adenocarcinoma",
+                    abbreviation: "READ"
+                }, {
+                    name: "Sarcoma",
+                    abbreviation: "SARC"
+                }, {
+                    name: "Skin Cutaneous Melanoma",
+                    abbreviation: "SKCM"
+                }, {
+                    name: "Stomach adenocarcinoma",
+                    abbreviation: "STAD"
+                }, {
+                    name: "Testicular Germ Cell Tumors",
+                    abbreviation: "TGCT"
+                }, {
+                    name: "Thyroid carcinoma",
+                    abbreviation: "THCA"
+                }, {
+                    name: "Thymoma",
+                    abbreviation: "THYM"
+                }, {
+                    name: "Uterine Corpus Endometrial Carcinoma",
+                    abbreviation: "UCEC"
+                }, {
+                    name: "Uterine Carcinosarcoma",
+                    abbreviation: "UCS"
+                }, {
+                    name: "Uveal Melanoma",
+                    abbreviation: "UVM"
+                }];
+            }
+        });
+    </script>
+</polymer-element>

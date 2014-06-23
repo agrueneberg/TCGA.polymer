@@ -8,6 +8,7 @@
         <!-- Load Web Components polyfills -->
         <script src="bower_components/platform/platform.js"></script>
         <!-- Load custom components -->
+        <link rel="import" href="elements/tcga-cancer-type-selector.html">
         <link rel="import" href="elements/tcga-patient-selector.html">
         <link rel="import" href="elements/tcga-rppa.html">
     </head>
@@ -34,18 +35,25 @@
             or <code>TCGA-02-0011</code> to get an idea of what this tool is doing.
         </p>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <tcga-cancer-type-selector>
+            </div>
+            <div class="col-md-4">
                 <tcga-patient-selector>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <tcga-rppa>
             </div>
         </div>
         <script>
             window.addEventListener("polymer-ready", function () {
-                var tcgaPatients, tcgaRppa;
+                var tcgaCancerType, tcgaPatients, tcgaRppa;
+                tcgaCancerType = document.querySelector("tcga-cancer-type-selector");
                 tcgaPatients = document.querySelector("tcga-patient-selector");
                 tcgaRppa = document.querySelector("tcga-rppa");
+                tcgaCancerType.addEventListener("tcga-cancer-type", function (e) {
+                    tcgaPatients.cancerType = e.detail.cancerType;
+                });
                 tcgaPatients.addEventListener("tcga-patient", function (e) {
                     tcgaRppa.patient = e.detail.patients.join(",");
                 });

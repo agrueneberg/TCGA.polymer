@@ -1,6 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="tcga-patient-selector">
+<polymer-element name="tcga-patient-selector" attributes="cancerType">
     <template>
         <link rel="stylesheet" href="base.css">
         <h2>Patients</h2>
@@ -25,6 +25,15 @@
     <script>
         Polymer("tcga-patient-selector", {
             loading: true,
+            cancerType: "gbm",
+            cancerTypeChanged: function (oldValue, newValue) {
+                var customElement, patientRequest;
+                customElement = this;
+                customElement.loading = true;
+             // Normalize cancer type.
+                customElement.cancerType = newValue.toLowerCase();
+                customElement.loadPatients();
+            },
             togglePatient: function (e) {
                 var customElement, patient, barcode, index;
                 customElement = this;
@@ -46,11 +55,16 @@
                 customElement.patients = [];
             },
             ready: function () {
-                var customElement, patientRequest;
+                var customElement;
+                customElement = this;
+                customElement.loadPatients();
+            },
+            loadPatients: function () {
+                var customElement;
                 customElement = this;
              // Load patient data.
                 patientRequest = new XMLHttpRequest();
-                patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/gbm/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_gbm.txt");
+                patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/" + customElement.cancerType + "/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_" + customElement.cancerType + ".txt");
                 patientRequest.onload = function () {
                     var lines, columns, patients, patientTemplate;
                     lines = patientRequest.responseText.split("\n");
