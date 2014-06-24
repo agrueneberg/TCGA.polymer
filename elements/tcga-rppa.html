@@ -33,6 +33,9 @@
             patientsChanged: function () {
                 var customElement;
                 customElement = this;
+                if (Array.isArray(customElement.patients) === false) {
+                    customElement.patients = [customElement.patients];
+                }
              // Prevent from firing while loading data.
                 if (customElement.loading === false) {
                     customElement.updateTemplate();
