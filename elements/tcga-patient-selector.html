@@ -16,7 +16,7 @@
                 </tr>
                 <template repeat="{{patient in patients}}">
                     <tr>
-                        <td><input type="checkbox" on-click="{{togglePatient}}"></td>
+                        <td><input type="checkbox" checked="{{patient._selected === true}}" on-click="{{togglePatient}}"></td>
                         <td>{{patient.bcr_patient_barcode}}</td>
                         <td>{{patient.race}}</td>
                         <td>{{patient.gender}}</td>
@@ -38,18 +38,18 @@
                 customElement.loadPatients();
             },
             togglePatient: function (e) {
-                var customElement, patient, barcode, index;
+                var customElement, selectedPatients, patient;
                 customElement = this;
+                selectedPatients = [];
                 patient = e.target.templateInstance.model.patient;
-                barcode = patient.bcr_patient_barcode;
-                index = customElement.patients.indexOf(barcode);
-                if (index === -1) {
-                    customElement.patients.push(barcode);
-                } else {
-                    customElement.patients.splice(index, 1);
-                }
+                patient._selected = !patient._selected;
+                selectedPatients = customElement.patients.filter(function (patient) {
+                    return patient._selected === true;
+                }).map(function (patient) {
+                    return patient.bcr_patient_barcode;
+                });
                 customElement.fire("tcga-patient", {
-                    patients: customElement.patients
+                    patients: selectedPatients
                 });
             },
             created: function () {
