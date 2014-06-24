@@ -3,7 +3,7 @@
 <!-- Load dependencies -->
 <script src="../bower_components/async/lib/async.js"></script>
 
-<polymer-element name="tcga-rppa" attributes="patient">
+<polymer-element name="tcga-rppa" attributes="patients">
     <template>
         <h2>RPPA</h2>
         <template if={{loading}}>
@@ -30,7 +30,7 @@
         var rppaSamples;
         Polymer("tcga-rppa", {
             loading: true,
-            patientChanged: function () {
+            patientsChanged: function () {
                 var customElement;
                 customElement = this;
              // Prevent from firing while loading data.
@@ -41,11 +41,9 @@
             updateTemplate: function () {
                 var customElement, patients, filteredSamples;
                 customElement = this;
-                if (customElement.patient) {
-                 // Not sure what data types I can use in attributes, let's split the string for now.
-                    patients = customElement.patient.split(",");
+                if (customElement.patients.length > 0) {
                     filteredSamples = rppaSamples.filter(function (sample) {
-                        return patients.indexOf(sample.patientBarcode) !== -1;
+                        return customElement.patients.indexOf(sample.patientBarcode) !== -1;
                     });
                 } else {
                     filteredSamples = rppaSamples;
@@ -55,6 +53,7 @@
             created: function () {
                 var customElement;
                 customElement = this;
+                customElement.patients = [];
                 customElement.samples = [];
             },
             ready: function () {

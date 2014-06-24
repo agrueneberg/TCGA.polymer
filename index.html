@@ -54,8 +54,8 @@
                 tcgaCancerType.addEventListener("tcga-cancer-type", function (e) {
                     tcgaPatients.cancerType = e.detail.cancerType;
                 });
-                tcgaPatients.addEventListener("tcga-patient", function (e) {
-                    tcgaRppa.patient = e.detail.patients.join(",");
+                tcgaPatients.addEventListener("tcga-patients", function (e) {
+                    tcgaRppa.patients = e.detail.patients;
                 });
             });
         </script>

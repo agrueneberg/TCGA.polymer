@@ -48,7 +48,7 @@
                 }).map(function (patient) {
                     return patient.bcr_patient_barcode;
                 });
-                customElement.fire("tcga-patient", {
+                customElement.fire("tcga-patients", {
                     patients: selectedPatients
                 });
             },
