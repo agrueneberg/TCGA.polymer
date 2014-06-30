@@ -29,12 +29,10 @@
         Polymer("tcga-patient-selector", {
             loading: true,
             cancerType: "gbm",
-            cancerTypeChanged: function (oldValue, newValue) {
+            cancerTypeChanged: function () {
                 var customElement, patientRequest;
                 customElement = this;
                 customElement.loading = true;
-             // Normalize cancer type.
-                customElement.cancerType = newValue.toLowerCase();
                 customElement.loadPatients();
             },
             togglePatient: function (e) {

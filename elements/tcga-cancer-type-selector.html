@@ -5,13 +5,13 @@
         <h2>Cancer Type</h2>
         <select value="{{cancerType}}" on-change="{{selectCancerType}}">
             <template repeat="{{cancerType in cancerTypes}}">
-                <option value="{{cancerType.abbreviation}}">{{cancerType.abbreviation}}: {{cancerType.name}}</option>
+                <option value="{{cancerType.abbreviation}}">{{cancerType.abbreviation | toUpperCase}}: {{cancerType.name}}</option>
             </template>
         </table>
     </template>
     <script>
         Polymer("tcga-cancer-type-selector", {
-            cancerType: "GBM",
+            cancerType: "gbm",
             selectCancerType: function (e) {
                 var customElement;
                 customElement = this;
@@ -20,108 +20,111 @@
                     cancerType: customElement.cancerType
                 });
             },
+            toUpperCase: function (value) {
+                return value.toUpperCase();
+            },
             created: function () {
                 var customElement;
                 customElement = this;
                 customElement.cancerTypes = [{
                     name: "Adrenocortical carcinoma",
-                    abbreviation: "ACC"
+                    abbreviation: "acc"
                 }, {
                     name: "Bladder Urothelial Carcinoma",
-                    abbreviation: "BLCA"
+                    abbreviation: "blca"
                 }, {
                     name: "Breast invasive carcinoma",
-                    abbreviation: "BRCA"
+                    abbreviation: "brca"
                 }, {
                     name: "Cervical squamous cell carcinoma and endocervical adenocarcinoma",
-                    abbreviation: "CESC"
+                    abbreviation: "cesc"
                 }, {
                     name: "Cholangiocarcinoma",
-                    abbreviation: "CHOL"
+                    abbreviation: "chol"
                 }, {
                     name: "Colon adenocarcinoma",
-                    abbreviation: "COAD"
+                    abbreviation: "coad"
                 }, {
                     name: "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma",
-                    abbreviation: "DLBC"
+                    abbreviation: "dlbc"
                 }, {
                     name: "Esophageal carcinoma",
-                    abbreviation: "ESCA"
+                    abbreviation: "esca"
                 }, {
                     name: "Glioblastoma multiforme",
-                    abbreviation: "GBM"
+                    abbreviation: "gbm"
                 }, {
                     name: "Head and Neck squamous cell carcinoma",
-                    abbreviation: "HNSC"
+                    abbreviation: "hnsc"
                 }, {
                     name: "Kidney Chromophobe",
-                    abbreviation: "KICH"
+                    abbreviation: "kich"
                 }, {
                     name: "Kidney renal clear cell carcinoma",
-                    abbreviation: "KIRC"
+                    abbreviation: "kirc"
                 }, {
                     name: "Kidney renal papillary cell carcinoma",
-                    abbreviation: "KIRP"
+                    abbreviation: "kirp"
                 }, {
                     name: "Acute Myeloid Leukemia",
-                    abbreviation: "LAML"
+                    abbreviation: "laml"
                 }, {
                     name: "Brain Lower Grade Glioma",
-                    abbreviation: "LGG"
+                    abbreviation: "lgg"
                 }, {
                     name: "Liver hepatocellular carcinoma",
-                    abbreviation: "LIHC"
+                    abbreviation: "lihc"
                 }, {
                     name: "Lung adenocarcinoma",
-                    abbreviation: "LUAD"
+                    abbreviation: "luad"
                 }, {
                     name: "Lung squamous cell carcinoma",
-                    abbreviation: "LUSC"
+                    abbreviation: "lusc"
                 }, {
                     name: "Mesothelioma",
-                    abbreviation: "MESO"
+                    abbreviation: "meso"
                 }, {
                     name: "Ovarian serous cystadenocarcinoma",
-                    abbreviation: "OV"
+                    abbreviation: "ov"
                 }, {
                     name: "Pancreatic adenocarcinoma",
-                    abbreviation: "PAAD"
+                    abbreviation: "paad"
                 }, {
                     name: "Pheochromocytoma and Paraganglioma",
-                    abbreviation: "PCPG"
+                    abbreviation: "pcpg"
                 }, {
                     name: "Prostate adenocarcinoma",
-                    abbreviation: "PRAD"
+                    abbreviation: "prad"
                 }, {
                     name: "Rectum adenocarcinoma",
-                    abbreviation: "READ"
+                    abbreviation: "read"
                 }, {
                     name: "Sarcoma",
-                    abbreviation: "SARC"
+                    abbreviation: "sarc"
                 }, {
                     name: "Skin Cutaneous Melanoma",
-                    abbreviation: "SKCM"
+                    abbreviation: "skcm"
                 }, {
                     name: "Stomach adenocarcinoma",
-                    abbreviation: "STAD"
+                    abbreviation: "stad"
                 }, {
                     name: "Testicular Germ Cell Tumors",
-                    abbreviation: "TGCT"
+                    abbreviation: "tgct"
                 }, {
                     name: "Thyroid carcinoma",
-                    abbreviation: "THCA"
+                    abbreviation: "thca"
                 }, {
                     name: "Thymoma",
-                    abbreviation: "THYM"
+                    abbreviation: "thym"
                 }, {
                     name: "Uterine Corpus Endometrial Carcinoma",
-                    abbreviation: "UCEC"
+                    abbreviation: "ucec"
                 }, {
                     name: "Uterine Carcinosarcoma",
-                    abbreviation: "UCS"
+                    abbreviation: "ucs"
                 }, {
                     name: "Uveal Melanoma",
-                    abbreviation: "UVM"
+                    abbreviation: "uvm"
                 }];
             }
         });
