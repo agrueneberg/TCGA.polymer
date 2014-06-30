@@ -14,7 +14,7 @@
                     <th>Race</th>
                     <th>Gender</th>
                 </tr>
-                <template repeat="{{patient in patients}}">
+                <template repeat="{{patient in allPatients}}">
                     <tr>
                         <td><input type="checkbox" checked="{{patient._selected === true}}" on-click="{{togglePatient}}"></td>
                         <td>{{patient.bcr_patient_barcode}}</td>
@@ -36,23 +36,24 @@
                 customElement.loadPatients();
             },
             togglePatient: function (e) {
-                var customElement, selectedPatients, patient;
+                var customElement, patient, barcode, index;
                 customElement = this;
-                selectedPatients = [];
                 patient = e.target.templateInstance.model.patient;
-                patient._selected = !patient._selected;
-                selectedPatients = customElement.patients.filter(function (patient) {
-                    return patient._selected === true;
-                }).map(function (patient) {
-                    return patient.bcr_patient_barcode;
-                });
+                barcode = patient.bcr_patient_barcode;
+                index = customElement.patients.indexOf(barcode);
+                if (index === -1) {
+                    customElement.patients.push(barcode);
+                } else {
+                    customElement.patients.splice(index, 1);
+                }
                 customElement.fire("tcga-patients", {
-                    patients: selectedPatients
+                    patients: customElement.patients
                 });
             },
             created: function () {
                 var customElement;
                 customElement = this;
+                customElement.allPatients = [];
                 customElement.patients = [];
             },
             ready: function () {
@@ -89,7 +90,7 @@
                         }
                     });
                     customElement.loading = false;
-                    customElement.patients = patients;
+                    customElement.allPatients = patients;
                 };
                 patientRequest.send(null);
             }
