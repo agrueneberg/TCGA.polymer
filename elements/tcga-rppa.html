@@ -30,6 +30,7 @@
         var rppaSamples;
         Polymer("tcga-rppa", {
             loading: true,
+            cancerType: "gbm",
             patientsChanged: function () {
                 var customElement;
                 customElement = this;
@@ -65,69 +66,87 @@
                 customElement.loadRppaData();
             },
             loadRppaData: function () {
-                var customElement, fileSearchQuery, fileSearchParams, fileSearchRequest;
+                var customElement, diseaseRequest;
                 customElement = this;
-             // Load links to RPPA files.
-                fileSearchQuery = {
-                    projectCombo: "1",
-                    diseaseCombo: ["1"],
-                    dataCategoryCombo: ["7"],
-                    dataLevelCombo: ["3"],
-                    accessTierCombo: ["1"]
-                };
-                fileSearchParams = "start=0&limit=50&searchParams=" + encodeURIComponent(JSON.stringify(fileSearchQuery));
-                fileSearchRequest = new XMLHttpRequest();
-                fileSearchRequest.open("POST", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearch.json");
-                fileSearchRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                fileSearchRequest.onload = function () {
-                    var response, links;
-                    response = JSON.parse(fileSearchRequest.responseText);
-                    links = response.dccFileData.filter(function (link) {
-                        return link.hasOwnProperty("dataLevel") === true && link.dataLevel === 3;
+             // Load disease identifiers.
+                diseaseRequest = new XMLHttpRequest();
+                diseaseRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearchFilterData.json?" + encodeURIComponent("filter=disease&projectId=1"));
+                diseaseRequest.onload = function () {
+                    var response, pattern, disease, fileSearchQuery, fileSearchParams, fileSearchRequest;
+                    response = JSON.parse(diseaseRequest.responseText)
+                 // Determine disease identifier.
+                    pattern = new RegExp(customElement.cancerType, "i");
+                    response.diseaseData.some(function (data) {
+                        if (data.text.search(pattern) !== -1) {
+                            disease = data.id;
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
-                    async.map(links, function (link, callback) {
-                        var rppaRequest;
-                     // Load RPPA files.
-                        rppaRequest = new XMLHttpRequest();
-                        rppaRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/" + link.path);
-                        rppaRequest.onload = function () {
-                            var sampleRef, expressionLevels;
-                         // Normalize data.
-                            expressionLevels = {};
-                            rppaRequest.responseText.split("\n").forEach(function (line, i) {
-                                var tuple, antibody, expression;
-                             // Ignore empty lines.
-                                if (line !== "") {
-                                    tuple = line.split("\t");
-                                    if (tuple[0] === "Sample REF") {
-                                     // Extract Sample REF.
-                                        sampleRef = tuple[1];
-                                    } else if (tuple[0] === "Composite Element REF") {
-                                     // Ignore Composite Element REF.
-                                    } else {
-                                     // Extract antibodies and their expression levels.
-                                        antibody = tuple[0].match(/(.*)-\w+-\w+/)[1];
-                                        expression = Number(tuple[1]);
-                                        expressionLevels[antibody] = expression;
+                 // Load links to RPPA files.
+                    fileSearchQuery = {
+                        projectCombo: "1",
+                        diseaseCombo: [disease],
+                        dataCategoryCombo: ["7"],
+                        dataLevelCombo: ["3"],
+                        accessTierCombo: ["1"]
+                    };
+                    fileSearchParams = "start=0&limit=50&searchParams=" + encodeURIComponent(JSON.stringify(fileSearchQuery));
+                    fileSearchRequest = new XMLHttpRequest();
+                    fileSearchRequest.open("POST", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearch.json");
+                    fileSearchRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    fileSearchRequest.onload = function () {
+                        var response, links;
+                        response = JSON.parse(fileSearchRequest.responseText);
+                        links = response.dccFileData.filter(function (link) {
+                            return link.hasOwnProperty("dataLevel") === true && link.dataLevel === 3;
+                        });
+                        async.map(links, function (link, callback) {
+                            var rppaRequest;
+                         // Load RPPA files.
+                            rppaRequest = new XMLHttpRequest();
+                            rppaRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/" + link.path);
+                            rppaRequest.onload = function () {
+                                var sampleRef, expressionLevels;
+                             // Normalize data.
+                                expressionLevels = {};
+                                rppaRequest.responseText.split("\n").forEach(function (line, i) {
+                                    var tuple, antibody, expression;
+                                 // Ignore empty lines.
+                                    if (line !== "") {
+                                        tuple = line.split("\t");
+                                        if (tuple[0] === "Sample REF") {
+                                         // Extract Sample REF.
+                                            sampleRef = tuple[1];
+                                        } else if (tuple[0] === "Composite Element REF") {
+                                         // Ignore Composite Element REF.
+                                        } else {
+                                         // Extract antibodies and their expression levels.
+                                            antibody = tuple[0].match(/(.*)-\w+-\w+/)[1];
+                                            expression = Number(tuple[1]);
+                                            expressionLevels[antibody] = expression;
+                                        }
                                     }
-                                }
-                            });
-                         // Find patient barcode.
-                            patientBarcode = link.barcode.substring(0, 12);
-                            callback(null, {
-                                sampleUuid: sampleRef,
-                                patientBarcode: patientBarcode,
-                                expressionLevels: expressionLevels
-                            });
-                        };
-                        rppaRequest.send(null);
-                    }, function (err, samples) {
-                        rppaSamples = samples;
-                        customElement.loading = false;
-                        customElement.updateTemplate();
-                    });
+                                });
+                             // Find patient barcode.
+                                patientBarcode = link.barcode.substring(0, 12);
+                                callback(null, {
+                                    sampleUuid: sampleRef,
+                                    patientBarcode: patientBarcode,
+                                    expressionLevels: expressionLevels
+                                });
+                            };
+                            rppaRequest.send(null);
+                        }, function (err, samples) {
+                            rppaSamples = samples;
+                            customElement.loading = false;
+                            customElement.updateTemplate();
+                        });
+                    };
+                    fileSearchRequest.send(fileSearchParams);
                 };
-                fileSearchRequest.send(fileSearchParams);
+                diseaseRequest.send(null);
             }
         });
     </script>
