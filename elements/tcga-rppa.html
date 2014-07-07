@@ -10,20 +10,25 @@
             <img src="spinner.gif" />
         </template>
         <template if="{{!loading}}">
-            <table>
-                <tr>
-                    <th>Patient</th>
-                    <th>p53</th>
-                    <th>EGFR</th>
-                </tr>
-                <template repeat="{{sample in samples}}">
+            <template if="{{samples.length == 0}}">
+                <p>No data found.</p>
+            </template>
+            <template if="{{samples.length > 0}}">
+                <table>
                     <tr>
-                        <td>{{sample.patientBarcode}}</td>
-                        <td>{{sample.expressionLevels.p53}}</td>
-                        <td>{{sample.expressionLevels.EGFR}}</td>
+                        <th>Patient</th>
+                        <th>p53</th>
+                        <th>EGFR</th>
                     </tr>
-                </template>
-            </table>
+                    <template repeat="{{sample in samples}}">
+                        <tr>
+                            <td>{{sample.patientBarcode}}</td>
+                            <td>{{sample.expressionLevels.p53}}</td>
+                            <td>{{sample.expressionLevels.EGFR}}</td>
+                        </tr>
+                    </template>
+                </table>
+            </template>
         </template>
     </template>
     <script>
