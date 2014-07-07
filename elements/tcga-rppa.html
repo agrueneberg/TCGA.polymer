@@ -123,7 +123,7 @@
                              // Normalize data.
                                 expressionLevels = {};
                                 rppaRequest.responseText.split("\n").forEach(function (line, i) {
-                                    var tuple, antibody, expression;
+                                    var tuple, antibodyMatch, antibody, expression;
                                  // Ignore empty lines.
                                     if (line !== "") {
                                         tuple = line.split("\t");
@@ -134,7 +134,12 @@
                                          // Ignore Composite Element REF.
                                         } else {
                                          // Extract antibodies and their expression levels.
-                                            antibody = tuple[0].match(/(.*)-\w+-\w+/)[1];
+                                            antibodyMatch = tuple[0].match(/(.*)-\w+-\w+/);
+                                            if (antibodyMatch !== null) {
+                                                antibody = antibodyMatch[1];
+                                            } else {
+                                                antibody = tuple[0];
+                                            }
                                             expression = Number(tuple[1]);
                                             expressionLevels[antibody] = expression;
                                         }
