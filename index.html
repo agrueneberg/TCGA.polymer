@@ -13,12 +13,14 @@
     <body>
         <h1>TCGA.polymer</h1>
         <p>
-            This playground demonstrates the use of
-            <a href="http://www.polymer-project.org">Polymer</a> to create two
-            Web Components: a patient dashboard and an RPPA
-            browser. Both components are working together:
-            selecting a patient in the patient dashboard will filter for
-            antibody expressions in the RPPA browser.
+            This playground demonstrates the use of <a
+            href="http://www.polymer-project.org">Polymer</a> to create a few
+            <a href="http://cancergenome.nih.gov">TCGA</a>-related Web
+            Components: a cancer type selector, a patient selector and an RPPA
+            browser. All components are working together: selecting a patient
+            in the patient selector will filter for antibody expressions in
+            the RPPA browser, and selecting a cancer type will change the two
+            other elements.
         </p>
         <p>
             You can use the Web Components on their own or in different
@@ -29,8 +31,9 @@
         </p>
         <p>
             Note: Not all patients appear in the RPPA data, i.e. some
-            selections won't do anything. Try <code>TCGA-02-0003</code>,
-            <code>TCGA-02-0004</code>, or <code>TCGA-02-0011</code> for
+            selections won't do anything. Also, some cancer types do not have
+            associated patient data. Try <code>TCGA-02-0003</code>,
+            <code>TCGA-02-0011</code>, or <code>TCGA-02-0014</code> for
             <code>GBM</code> to get an idea of what this tool is doing.
         </p>
         <tcga-dashboard>
