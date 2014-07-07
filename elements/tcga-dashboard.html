@@ -1,0 +1,20 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="tcga-cancer-type-selector.html">
+<link rel="import" href="tcga-patient-selector.html">
+<link rel="import" href="tcga-rppa.html">
+
+<polymer-element name="tcga-dashboard" noscript>
+    <template>
+        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <div class="col-md-4">
+            <tcga-cancer-type-selector cancerType="{{cancerType}}"></tcga-cancer-type-selector>
+        </div>
+        <div class="col-md-4">
+            <tcga-patient-selector cancerType="{{cancerType}}" patients="{{patients}}"></tcga-patient-selector>
+        </div>
+        <div class="col-md-4">
+            <tcga-rppa cancerType="{{cancerType}}" patients="{{patients}}"></tcga-rppa>
+        </div>
+    </template>
+</polymer-element>

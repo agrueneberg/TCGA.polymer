@@ -8,9 +8,7 @@
         <!-- Load Web Components polyfills -->
         <script src="bower_components/platform/platform.js"></script>
         <!-- Load custom components -->
-        <link rel="import" href="elements/tcga-cancer-type-selector.html">
-        <link rel="import" href="elements/tcga-patient-selector.html">
-        <link rel="import" href="elements/tcga-rppa.html">
+        <link rel="import" href="elements/tcga-dashboard.html">
     </head>
     <body>
         <h1>TCGA.polymer</h1>
@@ -27,37 +25,14 @@
             contexts (without the worry of overwriting global variables and
             such) by loading the Polymer polyfill, importing the custom
             elements, and adding an HTML tag such as
-            <code>&lt;tcga-patient-selector /&gt;</code>.
+            <code>&lt;tcga-dashboard /&gt;</code>.
         </p>
         <p>
-            Note: Not all patients appear in the RPPA data, i.e. some selections
-            won't do anything. Try <code>TCGA-02-0003</code>, <code>TCGA-02-0004</code>,
-            or <code>TCGA-02-0011</code> to get an idea of what this tool is doing.
+            Note: Not all patients appear in the RPPA data, i.e. some
+            selections won't do anything. Try <code>TCGA-02-0003</code>,
+            <code>TCGA-02-0004</code>, or <code>TCGA-02-0011</code> for
+            <code>GBM</code> to get an idea of what this tool is doing.
         </p>
-        <div class="row">
-            <div class="col-md-4">
-                <tcga-cancer-type-selector></tcga-cancer-type-selector>
-            </div>
-            <div class="col-md-4">
-                <tcga-patient-selector></tcga-patient-selector>
-            </div>
-            <div class="col-md-4">
-                <tcga-rppa></tcga-rppa>
-            </div>
-        </div>
-        <script>
-            window.addEventListener("polymer-ready", function () {
-                var tcgaCancerType, tcgaPatients, tcgaRppa;
-                tcgaCancerType = document.querySelector("tcga-cancer-type-selector");
-                tcgaPatients = document.querySelector("tcga-patient-selector");
-                tcgaRppa = document.querySelector("tcga-rppa");
-                tcgaCancerType.addEventListener("tcga-cancer-type", function (e) {
-                    tcgaPatients.cancerType = e.detail.cancerType;
-                });
-                tcgaPatients.addEventListener("tcga-patients", function (e) {
-                    tcgaRppa.patients = e.detail.patients;
-                });
-            });
-        </script>
+        <tcga-dashboard>
     </body>
 </html>
