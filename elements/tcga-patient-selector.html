@@ -7,22 +7,27 @@
             <img src="spinner.gif" />
         </template>
         <template if="{{!loading}}">
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Patient</th>
-                    <th>Race</th>
-                    <th>Gender</th>
-                </tr>
-                <template repeat="{{patient in allPatients}}">
+            <template if="{{allPatients.length == 0}}">
+                <p>No data found.</p>
+            </template>
+            <template if="{{allPatients.length > 0}}">
+                <table>
                     <tr>
-                        <td><input type="checkbox" checked="{{patient._selected === true}}" on-click="{{togglePatient}}"></td>
-                        <td>{{patient.bcr_patient_barcode}}</td>
-                        <td>{{patient.race}}</td>
-                        <td>{{patient.gender}}</td>
+                        <th></th>
+                        <th>Patient</th>
+                        <th>Race</th>
+                        <th>Gender</th>
                     </tr>
-                </template>
-            </table>
+                    <template repeat="{{patient in allPatients}}">
+                        <tr>
+                            <td><input type="checkbox" checked="{{patient._selected === true}}" on-click="{{togglePatient}}"></td>
+                            <td>{{patient.bcr_patient_barcode}}</td>
+                            <td>{{patient.race}}</td>
+                            <td>{{patient.gender}}</td>
+                        </tr>
+                    </template>
+                </table>
+            </template>
         </template>
     </template>
     <script>
@@ -68,27 +73,29 @@
                 patientRequest = new XMLHttpRequest();
                 patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/" + customElement.cancerType + "/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_" + customElement.cancerType + ".txt");
                 patientRequest.onload = function () {
-                    var lines, columns, patients;
-                    lines = patientRequest.responseText.split("\n");
-                 // Skip first header line: obsolete schema?
-                    lines.shift();
-                 // Get column names.
-                    columns = lines.shift().split("\t");
-                 // Skip third header line: not sure what it means.
-                    lines.shift();
+                    var patients, lines, columns;
                     patients = [];
-                    lines.map(function (line) {
-                     // Filter empty lines.
-                        if (line !== "") {
-                            var fields, patient;
-                            fields = line.split("\t");
-                            patient = {};
-                            fields.forEach(function (value, idx) {
-                                patient[columns[idx]] = value;
-                            });
-                            patients.push(patient);
-                        }
-                    });
+                    if (patientRequest.status === 200) {
+                        lines = patientRequest.responseText.split("\n");
+                     // Skip first header line: obsolete schema?
+                        lines.shift();
+                     // Get column names.
+                        columns = lines.shift().split("\t");
+                     // Skip third header line: not sure what it means.
+                        lines.shift();
+                        lines.map(function (line) {
+                         // Filter empty lines.
+                            if (line !== "") {
+                                var fields, patient;
+                                fields = line.split("\t");
+                                patient = {};
+                                fields.forEach(function (value, idx) {
+                                    patient[columns[idx]] = value;
+                                });
+                                patients.push(patient);
+                            }
+                        });
+                    }
                     customElement.loading = false;
                     customElement.allPatients = patients;
                 };
