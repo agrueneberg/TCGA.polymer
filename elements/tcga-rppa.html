@@ -60,6 +60,11 @@
                 customElement.samples = [];
             },
             ready: function () {
+                var customElement;
+                customElement = this;
+                customElement.loadRppaData();
+            },
+            loadRppaData: function () {
                 var customElement, fileSearchQuery, fileSearchParams, fileSearchRequest;
                 customElement = this;
              // Load links to RPPA files.
