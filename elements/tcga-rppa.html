@@ -79,7 +79,7 @@
                 diseaseRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearchFilterData.json?" + encodeURIComponent("filter=disease&projectId=1"));
                 diseaseRequest.onload = function () {
                     var response, pattern, disease, fileSearchQuery, fileSearchParams, fileSearchRequest;
-                    response = JSON.parse(diseaseRequest.responseText)
+                    response = JSON.parse(diseaseRequest.responseText);
                  // Determine disease identifier.
                     pattern = new RegExp(customElement.cancerType, "i");
                     response.diseaseData.some(function (data) {
@@ -114,7 +114,7 @@
                             rppaRequest = new XMLHttpRequest();
                             rppaRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/" + link.path);
                             rppaRequest.onload = function () {
-                                var sampleRef, expressionLevels;
+                                var sampleRef, expressionLevels, patientBarcode;
                              // Normalize data.
                                 expressionLevels = {};
                                 rppaRequest.responseText.split("\n").forEach(function (line, i) {

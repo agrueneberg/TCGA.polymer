@@ -30,7 +30,7 @@
             loading: true,
             cancerType: "gbm",
             cancerTypeChanged: function () {
-                var customElement, patientRequest;
+                var customElement;
                 customElement = this;
                 customElement.loading = true;
                 customElement.loadPatients();
@@ -62,13 +62,13 @@
                 customElement.loadPatients();
             },
             loadPatients: function () {
-                var customElement;
+                var customElement, patientRequest;
                 customElement = this;
              // Load patient data.
                 patientRequest = new XMLHttpRequest();
                 patientRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/" + customElement.cancerType + "/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_" + customElement.cancerType + ".txt");
                 patientRequest.onload = function () {
-                    var lines, columns, patients, patientTemplate;
+                    var lines, columns, patients;
                     lines = patientRequest.responseText.split("\n");
                  // Skip first header line: obsolete schema?
                     lines.shift();
