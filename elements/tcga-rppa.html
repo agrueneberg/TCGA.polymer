@@ -3,7 +3,7 @@
 <!-- Load dependencies -->
 <script src="../bower_components/async/lib/async.js"></script>
 
-<polymer-element name="tcga-rppa" attributes="patients">
+<polymer-element name="tcga-rppa" attributes="cancerType patients">
     <template>
         <h2>RPPA</h2>
         <template if={{loading}}>
@@ -31,6 +31,12 @@
         Polymer("tcga-rppa", {
             loading: true,
             cancerType: "gbm",
+            cancerTypeChanged: function () {
+                var customElement;
+                customElement = this;
+                customElement.loading = true;
+                customElement.loadRppaData();
+            },
             patientsChanged: function () {
                 var customElement;
                 customElement = this;
