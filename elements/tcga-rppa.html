@@ -4,7 +4,7 @@
 <script src="../bower_components/underscore/underscore.js"></script>
 <script src="../bower_components/async/lib/async.js"></script>
 
-<polymer-element name="tcga-rppa" attributes="cancerType patients">
+<polymer-element name="tcga-rppa" attributes="cancerType antibodies patients">
     <template>
         <h2>RPPA</h2>
         <template if={{loading}}>
@@ -18,14 +18,16 @@
                 <table>
                     <tr>
                         <th>Patient</th>
-                        <th>p53</th>
-                        <th>EGFR</th>
+                        <template repeat="{{antibody in antibodies}}">
+                            <th>{{antibody}}</th>
+                        </template>
                     </tr>
                     <template repeat="{{sample in samples}}">
                         <tr>
                             <td>{{sample.patientBarcode}}</td>
-                            <td>{{sample.expressionLevels.p53}}</td>
-                            <td>{{sample.expressionLevels.EGFR}}</td>
+                            <template repeat="{{antibody in antibodies}}">
+                                <td>{{sample.expressionLevels[antibody]}}</td>
+                            </template>
                         </tr>
                     </template>
                 </table>
@@ -42,6 +44,17 @@
                 customElement = this;
                 customElement.loading = true;
                 customElement.loadRppaData();
+            },
+            antibodiesChanged: function () {
+                var customElement;
+                customElement = this;
+                if (Array.isArray(customElement.antibodies) === false) {
+                    customElement.antibodies = [customElement.antibodies];
+                }
+             // Prevent from firing while loading data.
+                if (customElement.loading === false) {
+                    customElement.updateTemplate();
+                }
             },
             patientsChanged: function () {
                 var customElement;
@@ -70,6 +83,7 @@
                 var customElement;
                 customElement = this;
                 customElement.patients = [];
+                customElement.antibodies = [];
                 customElement.samples = [];
             },
             ready: function () {
@@ -129,13 +143,7 @@
                                         } else if (tuple[0] === "Composite Element REF") {
                                          // Ignore Composite Element REF.
                                         } else {
-                                         // Extract antibodies and their expression levels.
-                                            antibodyMatch = tuple[0].match(/(.*)-\w+-\w+/);
-                                            if (antibodyMatch !== null) {
-                                                antibody = antibodyMatch[1];
-                                            } else {
-                                                antibody = tuple[0];
-                                            }
+                                            antibody = tuple[0];
                                             expression = Number(tuple[1]);
                                             expressionLevels[antibody] = expression;
                                         }
