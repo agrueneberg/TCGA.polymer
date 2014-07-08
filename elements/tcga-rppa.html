@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <!-- Load dependencies -->
+<script src="../bower_components/underscore/underscore.js"></script>
 <script src="../bower_components/async/lib/async.js"></script>
 
 <polymer-element name="tcga-rppa" attributes="cancerType patients">
@@ -87,18 +88,13 @@
                     response = JSON.parse(diseaseRequest.responseText);
                  // Determine disease identifier.
                     pattern = new RegExp(customElement.cancerType, "i");
-                    response.diseaseData.some(function (data) {
-                        if (data.text.search(pattern) !== -1) {
-                            disease = data.id;
-                            return true;
-                        } else {
-                            return false;
-                        }
+                    disease = _.find(response.diseaseData, function (disease) {
+                        return disease.text.search(pattern) !== -1;
                     });
                  // Load links to RPPA files.
                     fileSearchQuery = {
                         projectCombo: "1",
-                        diseaseCombo: [disease],
+                        diseaseCombo: [disease.id],
                         dataCategoryCombo: ["7"],
                         dataLevelCombo: ["3"],
                         accessTierCombo: ["1"]
