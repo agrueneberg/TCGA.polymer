@@ -1,0 +1,134 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="tcga-antibody-selector" attributes="cancerType antibodies">
+    <template>
+        <h2>Antibodies</h2>
+        <template if={{loading}}>
+            <img src="spinner.gif">
+        </template>
+        <template if="{{!loading}}">
+            <template if="{{allAntibodies.length == 0}}">
+                <p>No data found.</p>
+            </template>
+            <template if="{{allAntibodies.length > 0}}">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Antibody</th>
+                        <th>Gene</th>
+                    </tr>
+                    <template repeat="{{antibody in allAntibodies}}">
+                        <tr>
+                            <td><input type="checkbox" checked="{{antibody._selected === true}}" on-click="{{toggleAntibody}}"></td>
+                            <td>{{antibody.composite_element_ref}}</td>
+                            <td>{{antibody.gene_name}}</td>
+                        </tr>
+                    </template>
+                </table>
+            </template>
+        </template>
+    </template>
+    <script>
+        Polymer("tcga-antibody-selector", {
+            loading: true,
+            cancerType: "gbm",
+            cancerTypeChanged: function () {
+                var customElement;
+                customElement = this;
+                customElement.loading = true;
+                customElement.loadAntibodies();
+            },
+            toggleAntibody: function (e) {
+                var customElement, antibody, compositeElementRef, index;
+                customElement = this;
+                antibody = e.target.templateInstance.model.antibody;
+                compositeElementRef = antibody.composite_element_ref;
+                index = customElement.antibodies.indexOf(compositeElementRef);
+                if (index === -1) {
+                    customElement.antibodies.push(compositeElementRef);
+                } else {
+                    customElement.antibodies.splice(index, 1);
+                }
+                customElement.fire("tcga-antibodies", {
+                    antibodies: customElement.antibodies
+                });
+            },
+            created: function () {
+                var customElement;
+                customElement = this;
+                customElement.allAntibodies = [];
+                customElement.antibodies = [];
+            },
+            ready: function () {
+                var customElement;
+                customElement = this;
+                customElement.loadAntibodies();
+            },
+            loadAntibodies: function () {
+                var customElement, diseaseRequest;
+                customElement = this;
+             // Load disease identifiers.
+                diseaseRequest = new XMLHttpRequest();
+                diseaseRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearchFilterData.json?" + encodeURIComponent("filter=disease&projectId=1"));
+                diseaseRequest.onload = function () {
+                    var response, pattern, disease, fileSearchQuery, fileSearchParams, fileSearchRequest;
+                    response = JSON.parse(diseaseRequest.responseText);
+                 // Determine disease identifier.
+                    pattern = new RegExp(customElement.cancerType, "i");
+                    disease = _.find(response.diseaseData, function (disease) {
+                        return disease.text.search(pattern) !== -1;
+                    });
+                 // Search for MAGE-TAB data.
+                    fileSearchQuery = {
+                        projectCombo: "1",
+                        diseaseCombo: [disease.id],
+                        dataCategoryCombo: ["7"],
+                        dataLevelCombo: ["0"],
+                        accessTierCombo: ["1"]
+                    };
+                    fileSearchParams = "start=0&limit=100000&searchParams=" + encodeURIComponent(JSON.stringify(fileSearchQuery));
+                    fileSearchRequest = new XMLHttpRequest();
+                    fileSearchRequest.open("POST", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearch.json");
+                    fileSearchRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    fileSearchRequest.onload = function () {
+                        var response, annotationFile, annotationFileRequest;
+                        response = JSON.parse(fileSearchRequest.responseText);
+                        annotationFile = _.find(response.dccFileData, function (link) {
+                            return link.hasOwnProperty("fileName") === true && link.fileName.indexOf("antibody_annotation.txt", link.fileName.length - 23) !== -1
+                        });
+                        annotationFileRequest = new XMLHttpRequest();
+                        annotationFileRequest.open("GET", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov" + annotationFile.path);
+                        annotationFileRequest.onload = function () {
+                            var antibodies, lines, columns;
+                            antibodies = [];
+                            if (annotationFileRequest.status === 200) {
+                                lines = annotationFileRequest.responseText.split("\n");
+                             // Get and normalize column names.
+                                columns = lines.shift().split("\t").map(function (column) {
+                                    return column.toLowerCase().replace(/ /g, "_");
+                                });
+                                lines.forEach(function (line) {
+                                 // Filter empty lines.
+                                    if (line !== "") {
+                                        var fields, antibody;
+                                        fields = line.split("\t");
+                                        antibody = {};
+                                        fields.forEach(function (value, idx) {
+                                            antibody[columns[idx]] = value;
+                                        });
+                                        antibodies.push(antibody);
+                                    }
+                                });
+                            }
+                            customElement.loading = false;
+                            customElement.allAntibodies = antibodies;
+                        };
+                        annotationFileRequest.send(null);
+                    };
+                    fileSearchRequest.send(fileSearchParams);
+                };
+                diseaseRequest.send(null);
+            }
+        });
+    </script>
+</polymer-element>
