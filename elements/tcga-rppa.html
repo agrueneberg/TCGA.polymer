@@ -103,7 +103,7 @@
                         dataLevelCombo: ["3"],
                         accessTierCombo: ["1"]
                     };
-                    fileSearchParams = "start=0&limit=50&searchParams=" + encodeURIComponent(JSON.stringify(fileSearchQuery));
+                    fileSearchParams = "start=0&limit=100000&searchParams=" + encodeURIComponent(JSON.stringify(fileSearchQuery));
                     fileSearchRequest = new XMLHttpRequest();
                     fileSearchRequest.open("POST", "https://aproxas.herokuapp.com/?url=https://tcga-data.nci.nih.gov/ccg-data-web/search/fileSearch.json");
                     fileSearchRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
