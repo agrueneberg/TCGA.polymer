@@ -49,9 +49,6 @@
                 } else {
                     customElement.antibodies.splice(index, 1);
                 }
-                customElement.fire("tcga-antibodies", {
-                    antibodies: customElement.antibodies
-                });
             },
             created: function () {
                 var customElement;

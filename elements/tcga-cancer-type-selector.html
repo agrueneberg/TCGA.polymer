@@ -16,9 +16,6 @@
                 var customElement;
                 customElement = this;
                 customElement.cancerType = e.target.value;
-                customElement.fire("tcga-cancer-type", {
-                    cancerType: customElement.cancerType
-                });
             },
             toUpperCase: function (value) {
                 return value.toUpperCase();

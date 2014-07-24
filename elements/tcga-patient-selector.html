@@ -51,9 +51,6 @@
                 } else {
                     customElement.patients.splice(index, 1);
                 }
-                customElement.fire("tcga-patients", {
-                    patients: customElement.patients
-                });
             },
             created: function () {
                 var customElement;
