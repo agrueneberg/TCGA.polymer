@@ -1,32 +1,38 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-selector/core-selector.html">
 
 <polymer-element name="tcga-antibody-selector" attributes="cancerType antibodies">
     <template>
         <h2>Antibodies</h2>
-        <template if={{loading}}>
-            <img src="spinner.gif">
-        </template>
-        <template if="{{!loading}}">
-            <template if="{{allAntibodies.length == 0}}">
-                <p>No data found.</p>
+        <!-- Workaround for automatic node finding not being able to find nodes
+             in conditional templates: Polymer/polymer#387 -->
+        <div id="list">
+            <template if={{loading}}>
+                <img src="spinner.gif">
             </template>
-            <template if="{{allAntibodies.length > 0}}">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Antibody</th>
-                        <th>Gene</th>
-                    </tr>
-                    <template repeat="{{antibody in allAntibodies}}">
+            <template if="{{!loading}}">
+                <template if="{{allAntibodies.length == 0}}">
+                    <p>No data found.</p>
+                </template>
+                <template if="{{allAntibodies.length > 0}}">
+                    <table>
                         <tr>
-                            <td><input type="checkbox" checked="{{antibody._selected === true}}" on-click="{{toggleAntibody}}"></td>
-                            <td>{{antibody.composite_element_ref}}</td>
-                            <td>{{antibody.gene_name}}</td>
+                            <th></th>
+                            <th>Antibody</th>
+                            <th>Gene</th>
                         </tr>
-                    </template>
-                </table>
+                        <template repeat="{{antibody in allAntibodies}}">
+                            <tr>
+                                <td><input type="checkbox" value="{{antibody.composite_element_ref}}"></td>
+                                <td>{{antibody.composite_element_ref}}</td>
+                                <td>{{antibody.gene_name}}</td>
+                            </tr>
+                        </template>
+                    </table>
+                </template>
             </template>
-        </template>
+        </div>
+        <core-selector target="{{$.list}}" itemsSelector="input[type=checkbox]" valueattr="value" selectedProperty="checked" selected="{{antibodies}}" multi></core-selector>
     </template>
     <script>
         Polymer("tcga-antibody-selector", {
@@ -37,18 +43,6 @@
                 customElement = this;
                 customElement.loading = true;
                 customElement.loadAntibodies();
-            },
-            toggleAntibody: function (e) {
-                var customElement, antibody, compositeElementRef, index;
-                customElement = this;
-                antibody = e.target.templateInstance.model.antibody;
-                compositeElementRef = antibody.composite_element_ref;
-                index = customElement.antibodies.indexOf(compositeElementRef);
-                if (index === -1) {
-                    customElement.antibodies.push(compositeElementRef);
-                } else {
-                    customElement.antibodies.splice(index, 1);
-                }
             },
             created: function () {
                 var customElement;

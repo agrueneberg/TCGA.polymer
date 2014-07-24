@@ -1,34 +1,40 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-selector/core-selector.html">
 
 <polymer-element name="tcga-patient-selector" attributes="cancerType patients">
     <template>
         <h2>Patients</h2>
-        <template if={{loading}}>
-            <img src="spinner.gif" />
-        </template>
-        <template if="{{!loading}}">
-            <template if="{{allPatients.length == 0}}">
-                <p>No data found.</p>
+        <!-- Workaround for automatic node finding not being able to find nodes
+             in conditional templates: Polymer/polymer#387 -->
+        <div id="list">
+            <template if={{loading}}>
+                <img src="spinner.gif" />
             </template>
-            <template if="{{allPatients.length > 0}}">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Patient</th>
-                        <th>Race</th>
-                        <th>Gender</th>
-                    </tr>
-                    <template repeat="{{patient in allPatients}}">
+            <template if="{{!loading}}">
+                <template if="{{allPatients.length == 0}}">
+                    <p>No data found.</p>
+                </template>
+                <template if="{{allPatients.length > 0}}">
+                    <table>
                         <tr>
-                            <td><input type="checkbox" checked="{{patient._selected === true}}" on-click="{{togglePatient}}"></td>
-                            <td>{{patient.bcr_patient_barcode}}</td>
-                            <td>{{patient.race}}</td>
-                            <td>{{patient.gender}}</td>
+                            <th></th>
+                            <th>Patient</th>
+                            <th>Race</th>
+                            <th>Gender</th>
                         </tr>
-                    </template>
-                </table>
+                        <template repeat="{{patient in allPatients}}">
+                            <tr>
+                                <td><input type="checkbox" value="{{patient.bcr_patient_barcode}}"></td>
+                                <td>{{patient.bcr_patient_barcode}}</td>
+                                <td>{{patient.race}}</td>
+                                <td>{{patient.gender}}</td>
+                            </tr>
+                        </template>
+                    </table>
+                </template>
             </template>
-        </template>
+        </div>
+        <core-selector target="{{$.list}}" itemsSelector="input[type=checkbox]" valueattr="value" selectedProperty="checked" selected="{{patients}}" multi></core-selector>
     </template>
     <script>
         Polymer("tcga-patient-selector", {
@@ -39,18 +45,6 @@
                 customElement = this;
                 customElement.loading = true;
                 customElement.loadPatients();
-            },
-            togglePatient: function (e) {
-                var customElement, patient, barcode, index;
-                customElement = this;
-                patient = e.target.templateInstance.model.patient;
-                barcode = patient.bcr_patient_barcode;
-                index = customElement.patients.indexOf(barcode);
-                if (index === -1) {
-                    customElement.patients.push(barcode);
-                } else {
-                    customElement.patients.splice(index, 1);
-                }
             },
             created: function () {
                 var customElement;
