@@ -8,6 +8,11 @@
 <polymer-element name="tcga-dashboard" noscript>
     <template>
         <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
         <div class="col-md-3">
             <tcga-cancer-type-selector cancerType="{{cancerType}}"></tcga-cancer-type-selector>
         </div>

@@ -2,6 +2,11 @@
 
 <polymer-element name="tcga-cancer-type-selector" attributes="cancerType">
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
         <h2>Cancer Type</h2>
         <select value="{{cancerType}}" on-change="{{selectCancerType}}">
             <template repeat="{{cancerType in cancerTypes}}">

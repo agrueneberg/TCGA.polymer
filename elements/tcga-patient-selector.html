@@ -3,6 +3,11 @@
 
 <polymer-element name="tcga-patient-selector" attributes="cancerType patients">
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
         <h2>Patients</h2>
         <!-- Workaround for automatic node finding not being able to find nodes
              in conditional templates: Polymer/polymer#387 -->

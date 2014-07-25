@@ -3,6 +3,11 @@
 
 <polymer-element name="tcga-antibody-selector" attributes="cancerType antibodies">
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
         <h2>Antibodies</h2>
         <!-- Workaround for automatic node finding not being able to find nodes
              in conditional templates: Polymer/polymer#387 -->

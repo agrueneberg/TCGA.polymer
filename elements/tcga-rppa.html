@@ -6,6 +6,11 @@
 
 <polymer-element name="tcga-rppa" attributes="cancerType antibodies patients">
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
         <h2>RPPA</h2>
         <template if={{loading}}>
             <img src="spinner.gif" />
